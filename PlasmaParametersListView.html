@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>等离子扫码枪参数管理</title>
+		<link href="css/basic.css" />
+	</head>
+	<body>
+		<script src="js/jquery-1.4.2.min.js"></script>
+		<script>
+			function test1() {
+				alert("我是按钮点击事件");
+			}
+			
+			function tset() {
+				alert("我是test方法");
+			}
+
+			function init() {
+				alert("init()")
+			}
+		</script>
+		<div class="tabTitle">
+			<div class="title-1 w220">
+				<p>
+					<font onclick="test()">等离子扫码枪参数管理</font>
+				</p>
+			</div>
+		</div>
+		<div class="boxBlack" style="width: 100%;font-size: 12px;">
+			<div style="overflow: scroll; height: 360px; width: 100%">
+				<!-- 信息列表画面，利用jqGrid控件，根据Server端传递的JSon数据进行显示 -->
+				<table style="width: 100%;margin: auto" border="1" >
+					<tr  id="trtop" style="text-align: center; background-color: #3DA554; color: #FFFFFF;height: 42px;">
+						<th style="width: 2%;" valign="middle">配方名</th>
+						<th style="width: 2%;" valign="middle">版本</th>
+
+						<th style="width: 2%;" valign="middle">步一RF功率</th>
+						<th style="width: 2%;" valign="middle">步一流量1</th>
+						<th style="width: 2%;" valign="middle">步一流量2</th>
+						<th style="width: 2%;" valign="middle">步一流量3</th>
+						<th style="width: 2%;" valign="middle">步一流量4</th>
+						<th style="width: 2%;" valign="middle">步一流量5</th>
+						<th style="width: 2%;" valign="middle">步一时间</th>
+						<th style="width: 2%;" valign="middle">步一温度</th>
+						<th style="width: 2%;" valign="middle">步一真空度</th>
+
+						<th style="width: 2%;" valign="middle">步二RF功率</th>
+						<th style="width: 2%;" valign="middle">步二流量1</th>
+						<th style="width: 2%;" valign="middle">步二流量2</th>
+						<th style="width: 2%;" valign="middle">步二流量3</th>
+						<th style="width: 2%;" valign="middle">步二流量4</th>
+						<th style="width: 2%;" valign="middle">步二流量5</th>
+						<th style="width: 2%;" valign="middle">步二时间</th>
+						<th style="width: 2%;" valign="middle">步二温度</th>
+						<th style="width: 2%;" valign="middle">步二真空度</th>
+
+						<th style="width: 2%;" valign="middle">步三RF功率</th>
+						<th style="width: 2%;" valign="middle">步三流量1</th>
+						<th style="width: 2%;" valign="middle">步三流量2</th>
+						<th style="width: 2%;" valign="middle">步三流量3</th>
+						<th style="width: 2%;" valign="middle">步三流量4</th>
+						<th style="width: 2%;" valign="middle">步三流量5</th>
+						<th style="width: 2%;" valign="middle">步三时间</th>
+						<th style="width: 2%;" valign="middle">步三温度</th>
+						<th style="width: 2%;" valign="middle">步三真空度</th>
+
+						<th style="width: 2%;" valign="middle">步四RF功率</th>
+						<th style="width: 2%;" valign="middle">步四流量1</th>
+						<th style="width: 2%;" valign="middle">步四流量2</th>
+						<th style="width: 2%;" valign="middle">步四流量3</th>
+						<th style="width: 2%;" valign="middle">步四流量4</th>
+						<th style="width: 2%;" valign="middle">步四流量5</th>
+						<th style="width: 2%;" valign="middle">步四时间</th>
+						<th style="width: 2%;" valign="middle">步四温度</th>
+						<th style="width: 2%;" valign="middle">步四真空度</th>
+
+						<th style="width: 2%;" valign="middle">步五RF功率</th>
+						<th style="width: 2%;" valign="middle">步五流量1</th>
+						<th style="width: 2%;" valign="middle">步五流量2</th>
+						<th style="width: 2%;" valign="middle">步五流量4</th>
+						<th style="width: 2%;" valign="middle">步五流量5</th>
+						<th style="width: 2%;" valign="middle">步五时间</th>
+						<th style="width: 2%;" valign="middle">步五温度</th>
+						<th style="width: 2%;" valign="middle">步五真空度</th>
+
+						<th style="width: 2%;" valign="middle">参数名</th>
+						<th style="width: 2%;" valign="middle">控制模式</th>
+						<th style="width: 2%;" valign="middle">操作</th>
+					</tr>
+
+					<!-- <c:forEach items="${Datalist}" var="dt" varStatus="st"> -->
+					<tr>
+						<td style="width: 2%;" valign="middle">FR408</td>
+						<td style="width: 2%;" valign="middle">1.0</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">123456</td>
+						<td style="width: 2%;" valign="middle">3</td>
+						<td style="width: 2%;" valign="middle"><button onclick="alert('我是按钮点击事件111')">修改</button></td>
+					</tr>
+
+					<tr>
+						<td style="width: 2%;" valign="middle">20211025-TEST2</td>
+						<td style="width: 2%;" valign="middle">1.0</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+						<td style="width: 2%;" valign="middle">1500</td>
+
+						<td style="width: 2%;" valign="middle">123456</td>
+						<td style="width: 2%;" valign="middle">3</td>
+						<td style="width: 2%;" valign="middle"><button onclick="test1()">修改</button></td>
+					</tr>
+					<!-- </c:forEach> -->
+
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

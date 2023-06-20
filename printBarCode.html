@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+
+		<title>压合获取条形码</title>
+		<link rel="stylesheet" type="text/css" media="all" href="css/basic.css" />
+		<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="js/JsBarcode.js"></script>
+		<script type="text/javascript">
+			function inputWip(el) {
+				$("#wips").append(
+					"<div style='border: #000000 1px solid; border-radius: 5px;display: inline-block;padding: 2px 2px;margin: 3px;'><span class='v1' value='" +
+					el.value + "'>" + el.value + "</span><button class='del1' onclick='delEl(this)'>X</button></div>");
+				el.value = '';
+			}
+
+			function obtain() {
+				$(".v1").each(function() {
+					$(".labels").show();
+					console.log(this.textContent);
+					// alert(this.textContent);
+				})
+
+			}
+
+			function delEl(el) {
+				$(el).parent().remove();
+			}
+			
+			function exportLabel(){
+				labelName = "";
+				// alert($("input[name='selectLabel']").length);
+				$("input[name='selectLabel']").each(function(){
+					if($(this).attr("checked")== true){
+						labelName = $(this).val();
+					}
+				})
+				if(labelName == ""){
+					alert("请选择标签！");
+					return;
+				}
+
+				JsBarcode("#barcode", labelName);//生成条形码
+				
+				bdhtml=window.document.body.innerHTML;
+				sprnstr="<!--startprint-->"; //开始打印标识字符串有17个字符
+				eprnstr="<!--endprint-->"; //结束打印标识字符串
+				prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
+				prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
+				window.document.body.innerHTML=prnhtml; //把需要打印的指定内容赋给body.innerHTML
+				window.print(); //调用浏览器的打印功能打印指定区域
+				window.document.body.innerHTML=bdhtml; // 最后还原页面
+				
+				$("input[name='selectLabel']").each(function(){
+					if($(this).attr("value")== labelName){
+						$(this).attr("checked","true")
+					}
+				})
+			}
+			
+			function select1(el){
+				if(!$(el).find("input").attr("checked")){
+					$(el).find("input").attr("checked","true")
+					$(".label").attr("style","background-color:#FFFFFF;");
+					$(el).attr("style","background-color:#FF00FF;");
+					labelName = "";
+					$("input[name='selectLabel']").each(function(){
+						if($(this).attr("checked")== true){
+							labelName = $(this).val();
+						}
+					})
+					JsBarcode("#barcode", labelName);//生成条形码
+				}
+			}
+			
+			function select2(el){
+				if($(el).attr("checked")){
+					$(".label").attr("style","background-color:#FFFFFF;");
+					$(el).parent(".label").attr("style","background-color:#FF00FF;");
+					$("input[name='selectLabel']").each(function(){
+						if($(this).attr("checked")== true){
+							labelName = $(this).val();
+						}
+					})
+					JsBarcode("#barcode", labelName);//生成条形码
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<link href="bootstrap/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+		<script type="text/javascript" src="bootstrap/assets/dist/js/bootstrap.bundle.min.js"></script>
+		<style type="text/css">
+			.container {
+				border: #000000 1px solid;
+				text-align: left;
+				margin: auto;
+				border-radius: 5px;
+				margin-top: 10px;
+				padding: 5px;
+			}
+			#wips {
+				border: #000000 1px solid;
+				border-radius: 5px;
+				margin-top: 5px;
+				min-height: 40px;
+			}
+			.label{
+				height: 50px;
+				border: #000000 1px solid;
+				border-radius: 5px;
+				vertical-align: middle;
+				padding: 0px 5px;
+				/* margin: 5px 10px; */
+			}
+			.labels{
+				border: #000000 1px solid;
+				border-radius: 5px;
+				display: none;
+			}
+			.del1{
+				border: #000000 1px solid;
+				border-radius: 5px;
+				padding: 0 3px;
+				margin: 0 2px;
+			}
+			.obtainButton{
+				border: #000000 1px solid;padding: 5px;border-radius: 5px;background-color: #00F7DE;margin: 5px 0px;
+			}
+			.strong{
+				font-weight: bold;
+			}
+			.exportButton{
+				border: #000000 1px solid;padding: 5px;border-radius: 5px;background-color: #00FF00;margin: 5px 0px;
+			}
+		</style>
+		<div class="container">
+			<div>
+				<span class="col-3 strong">工单号：</span>
+				<input class="col-4 themed-grid-col" type="text" onchange="inputWip(this)" />
+			</div>
+			<br />
+			<div>
+				<span class="col-3 strong">工单号集：</span>
+				<button class="col-2 obtainButton" onclick="obtain()">获取条码</button>
+				<div id="wips">
+					<div
+						style="border: #000000 1px solid; border-radius: 5px;display: inline-block;padding: 2px 2px;margin: 3px;">
+						<span id="v1" class="v1" value='201212346661232'>201212346661232</span>
+						<button class="del1" onclick="delEl(this)">X</button>
+					</div>
+				</div>
+			</div>
+			<div style="padding: 5px 0;">
+				<span class="col-3 strong">条码：</span>
+			</div>
+			<div class="col-12 labels">
+				<div class="row">
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="MTG-013"/><span>MTG-013</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="MTG-015"/><span>MTG-015</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="MTG-016"/><span>MTG-016</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="EM888"/><span>EM888</span></div>
+				</div>
+				<div class="row">
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="HTG-013"/><span>HTG-013</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="HTG-015"/><span>HTG-015</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="HTG-016"/><span>HTG-016</span></div>
+					<div class="col-3 label" onclick="select1(this)"><input onchange="select2(this)" style="height: 21px;" type="radio" name="selectLabel" value="M01"/><span>M01</span></div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2"><button class="col-12 exportButton" onclick="exportLabel()">打印条码</button></div>
+				</div>
+			</div>
+			<!--startprint-->
+			<svg id="barcode">123456</svg>
+			<!--endprint--> 
+		</div>
+	</body>
+</html>

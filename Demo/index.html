@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="layout-container">
+      <header class="herader-container">
+        <input type="text" id="newwip" placeholder="请输入工单号" />
+        <input type="button" value="添加到集合" onclick="handleAppendWip()" />
+      </header>
+      <section class="section-content">
+        工单号集合:
+        <div id="wips" class="wips-box"></div>
+      </section>
+      <footer class="footer-container">
+        <input type="button" value="读取" onclick="handleReadWips()" />
+      </footer>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

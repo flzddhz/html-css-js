@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>无铅</title>
+		<link rel="stylesheet" type="text/css" href="css/basic.css"/>
+		<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#batchinspection").click(function(){
+					if($("#batchinspection").is(":checked")){
+						$("[name='batchInspection']").show();
+					}else{
+						$("[name='batchInspection']").hide();
+					}
+				})
+			});
+			
+			function caQuantity(){
+				var yield = $("#yield").val();
+				var batchQuantity = $("#batchQuantity").val();
+				var qualified = $("#qualified").val();
+				
+				if(yield == null || yield.length == 0){
+					alert("数量pnl不能为空!");
+					return false;
+				}else if(parseInt(yield) == 0){
+					alert("数量不能为0");
+					return false;
+				}
+				
+				if(parseInt(qualified) > parseInt(batchQuantity)){
+					alert("不合格数量不能超过批量检查数量");
+					return false;
+				}
+				
+				if(parseInt(yield) - parseInt(batchQuantity) < 2){
+					alert("批量数量首件数量不能大于工单数量");
+					return false;
+				}
+				return true;
+			}
+			
+			function save(){
+				alert(1);
+				var flag = checkIsNull();//先检查必输项是否为空 
+				var caflag = caQuantity();
+				if(flag == true && caflag == true){
+					return;
+				}else{ 
+					$("#savebtn").attr("disabled","disabled");     
+					$("#saveForm").submit();	  
+				}
+			}
+			
+			function caQualified(){
+				var qualified = $("#qualified").val();
+				var reason = $("#reason").val();
+				
+				if(parseInt(qualified) > 0){
+					if(reason.length <= 0){
+						return false;
+					}else{
+						return true;
+					}
+				}
+				return true;
+			}
+			
+			
+		</script>
+	</head>
+	<body>
+		<form id="saveForm"
+				action="<%=WebContextLocal %>/leadFreehalAction/saveOrUpdate.action"
+				method="post">
+				<table class="formTable" style="width: 100%">
+					<tr>
+						<th align="right" height="22px" width="15%">检查项<font class="font2">*</font></th>
+						<td>
+							<input type="checkbox" name="inspect" checked="checked" disabled>首件检查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="batchinspection" type="checkbox" name="inspect" checked="checked">批量检查
+						</td>
+						<th align="right" height="22px" width="14.5%">板类型<font class="font2">*</font></th> 
+						<td style="text-align: center;" height="22px"> 
+							 正常<input type="radio" value="正常"  name="board_type" checked="checked"/>
+							&nbsp;返工<input type="radio" value="返工"  name="board_type" />  
+						</td>
+					</tr>
+					<tr>
+						<th align="right" height="22px" width="15%">员工编号<font class="font2">*</font></th>
+						<th height="22px" width="10%"><input type="text"  value="<%=userid %>"
+							maxlength="6" name="userId" id="userId" readonly="readonly" style="width: 98%; border: 0px"
+							onkeydown="if(event.keyCode==13)moveFocus('#userId','#assetNum')" /></th>
+						<th align="right" height="22px" width="15%">机台号<font class="font2">*</font></th>
+						<th height="22px" width="10%"><input type="text" value="<%=assetnum %>" maxlength="3"
+							name="assetNum" id="assetNum" onchange="getAssetData();"
+							onkeydown="if(event.keyCode==13)moveFocus('#assetNum','#wipentityname')"
+							style="width: 98%" /></th>
+						<th align="right">生产型号-批次号<font class="font2">*</font></th>
+						<th><input type="text" value="" name="wipprimaryname"
+							style="width: 70%; border: 0px" id="wipprimaryname"
+							readonly="readonly" />-<input type="text" id=batch_number name="batch_number" readonly="readonly"
+							style="width: 20%;" class="required" /></th>
+						<th align="right">备注<font class="font2"></font></th>
+						<th><input type="text" id=remark name="remark" 
+							style="width: 98%;" class="required" /></th>
+					</tr>
+					<tr>
+						<th align="right">工单编号<font class="font2">*</font></th>
+						<th><input type="text" name="wipentityname" id="wipentityname"
+							style="width: 98%" class="required"  onchange="getOrderData();"
+							onkeydown="if(event.keyCode==13)moveFocus('#wipentityname','#wipentityname')" /></th>
+						<th align="right">数量pnl<font class="font2">*</font></th>
+						<th><input type="text" name="yield" maxlength="8"
+							id="yield" style="width: 98%;" onchange="caQuantity()" oninput = "value=value.replace(/[^\d]/g,'')"
+							class="required" onchange= "setTotalArea()"/></th> 
+						<th align="right">拼板尺寸<font class="font2">*</font></th>
+						<th><input type="text" name="pnl_size" id="pnl_size"
+							style="width: 98%; " class="required"  readonly="readonly"/></th>   
+						<th align="right">Pnl面积<font class="font2">*</font></th>
+						<th><input type="text" id=pnl_area name="pnl_area"  
+							style="width: 98%; " class="required" readonly="readonly"/></th>
+					</tr>
+					<tr>
+					    <th align="right">生产时间<font class="font2">*</font></th>
+						<th><input type="text" value="<%=recordDate %>" id="createdate" class="Wdate" readonly="readonly"
+							name="createdate" style="width: 98%" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'<%=production_date %> 08:00:00',maxDate:'<%=production_date1 %> 08:00:00'})" /></th>
+						<th align="right">最大锡厚<font class="font2">*</font></th>
+						<th><input type="text" name="maxtinthickness" maxlength="8"
+							id="maxtinthickness" style="width: 98%;"
+							class="required" readonly="readonly" /></th> 
+						<th align="right">最小锡厚<font class="font2">*</font></th>
+						<th><input type="text" name="mintinthickness" id="mintinthickness"
+							style="width: 98%; " class="required"  readonly="readonly" /></th>   
+						<th align="right">实际锡厚<font class="font2">*</font></th>
+						<th><input type="text" id=acttinthickness name="acttinthickness"  
+							style="width: 98%; " class="required" /></th>
+					</tr> 
+					<tr>
+						<th style="width: 8%"  height="22px" align="right">首件<font class="font2">*</font></th>
+						<td align="left" style="width: 10%"><select class="easyui-combobox"
+							style="width: 98%;" id="firstthing"
+							name="firstthing">
+								<option value="ACC">ACC</option>
+								<option value="NG">NG</option>
+						</select></td>
+						<th style="width: 8%"  height="22px" align="right">首件外观<font class="font2">*</font></th>
+						<td align="left" style="width: 10%"><select class="easyui-combobox"
+							style="width: 98%;" " id="firstappearance"
+							name="firstappearance">
+								<option value="ACC">ACC</option>
+								<option value="NG">NG</option>
+						</select></td>
+						<th style="width: 8%"  height="22px" align="right">拉力测试<font class="font2">*</font></th>
+						<td align="left" style="width: 10%"><select class="easyui-combobox"
+							style="width: 98%;" " id="tensiletest"
+							name="tensiletest">
+								<option value="ACC">ACC</option>
+								<option value="NG">NG</option>
+						</select></td>
+						<th align="right">累计面积<font class="font2">*</font></th>
+						<th><input type="text" id=totalarea name="totalarea"  
+							style="width: 98%; " class="required" readonly="readonly" /></th>
+					</tr>
+					<tr name="batchInspection" align="left">
+						<th style="width: 8%"  height="22px" align="right">数量(批量)<font class="font2">*</font></th>
+						<td align="left" style="width: 10%">
+							<input type="number" name="batchQuantity" id="batchQuantity" value="0" oninput = "value=value.replace(/[^\d]/g,'')" onchange="caQuantity()"/>
+						</td>
+						<th style="width: 8%"  height="22px" align="right">不合格数量(批量)<font class="font2">*</font></th>
+						<td align="left" style="width: 10%">
+							<input type="number" name="qualified" id="qualified" value="0" oninput = "value=value.replace(/[^\d]/g,'')" onchange="caQuantity()"/>
+						</td>
+						<th style="width: 8%"  height="22px" align="right">不合格原因</th>
+						<td style="width: 30%" colspan="3">
+							<input id="bsx" type="checkbox" name="reason" value="不上锡">&nbsp;不上锡&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="bmxz" type="checkbox" name="reason" value="板面锡渣">&nbsp;板面锡渣&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="xg" type="checkbox" name="reason" value="锡高">&nbsp;锡高&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="bb" type="checkbox" name="reason" value="爆板">&nbsp;爆板&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="jszsx" type="checkbox" name="reason" value="金手指上锡">&nbsp;金手指上锡&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="xcc" type="checkbox" name="reason" value="锡粗糙">&nbsp;锡粗糙&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="xsk" type="checkbox" name="reason" value="锡塞孔">&nbsp;锡塞孔&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="jcbd" type="checkbox" name="reason" value="基材白点">&nbsp;基材白点&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="wb" type="checkbox" name="reason" value="污板">&nbsp;污板&nbsp;&nbsp;&nbsp;&nbsp;
+							<br/>
+							<input id="lyqp" type="checkbox" name="reason" value="绿油起泡">&nbsp;绿油起泡&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="llcs" type="checkbox" name="reason" value="拉力测试">&nbsp;拉力测试&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="qt" type="checkbox" name="reason" value="其他">&nbsp;其他(请补充)&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="bc" type="text" name="reason">
+						</td>
+					
+					</tr>
+
+					<tr>
+						<td colspan="10" style="text-align: center;color: #000000;"><input
+							type="button" id="savebtn" value="保存" onclick="save()"
+							class="submit_5" /> <input type="button" id="resetbtn" value="重置"
+							onclick="query()" class="submit_5" /></td>
+					</tr>
+					
+					
+					<input type="hidden" name="<%=Token.TOKEN_STRING_NAME %>"	value="<%=Token.getTokenString(session) %>">
+					<input type="hidden" name="organizationid" id="organizationid"	value="<%=orgid%>">
+					<input type="hidden" name="sid" id="sid" value="">  
+					<input type="hidden" name="total_yield" id="total_yield" value=""> 
+					<input type="hidden" name="total_area" id="total_area" value=""> 
+				
+				</table>
+		
+				<h3>无铅喷锡生产记录表 &nbsp;&nbsp;</h3>
+				<table class="formTable" style="width: 100%">
+					<tr>
+						<th style="width: 8%" height="22px" align="right">工厂名称<font class="font2">*</font></th>
+						<th style="width: 10%"><input type="text" value="<%=orgname%>" name="orgName"
+							id="orgName" readonly="readonly" style="width: 98%; border: 0px" />
+							<input type="hidden" value="<%=orgid%>" name="orgId" id="orgId" /></th>
+						<th style="width: 8%"  height="22px" align="right">操作员<font class="font2">*</font></th>
+						<th  style="width: 10%"><input type="text" value="<%=username%>" name="userName"
+							id="userName" readonly="readonly" style="width: 98%; border: 0px" /></th>
+						<th style="width: 8%"  height="22px" align="right">生产日期<font class="font2">*</font></th>
+						<th align="left" style="width: 10%"><select class="easyui-combobox"
+							style="width: 150px" onchange="query()" id="production_date"
+							name="production_date">
+								<option value="<%=dateStr1%>"
+									<%if (dateStr1.equals(production_date)) {%> selected="selected"
+									<%}%>><%=dateStr1%></option>
+								<option value="<%=dateStr2%>"
+									<%if (dateStr2.equals(production_date)) {%> selected="selected"
+									<%}%>><%=dateStr2%></option>
+						</select></th>
+						<th style="text-align: right; width: 42%" colspan="4"><input
+							type="button" id="querybtn" value="查询" onclick="query()"
+							class="submit_5" />&nbsp;&nbsp;<input
+							type="button" id="deletebtn" value="删除" onclick="dodel()"
+							class="submit_5" /> </th>
+					</tr> 
+				</table>
+			</form>
+	</body>
+</html>

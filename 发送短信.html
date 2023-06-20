@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<script>
+		var sendSms = {}; 
+		
+		// h5发送短信
+		sendSms.sendH5Note = function(phoneNumber, msgInfo) {
+			var systemFu = '?';
+			// if (common.moibleSystem() == 'IOS') { // ios异常处理
+				systemFu = `&`;
+			// }
+			var href = `sms:${phoneNumber}${systemFu}body=${msgInfo}`;
+			var a = document.createElement('a');
+			a.setAttribute('href', href);
+			a.setAttribute('target', '_blank');
+			a.setAttribute('id', 'startTelMedicine'); // 防止反复添加
+			if (document.getElementById('startTelMedicine')) {
+				document.body.removeChild(document.getElementById('startTelMedicine'));
+			}
+			document.body.appendChild(a);
+			a.click();
+		} 
+		
+		// 原生发送短信
+		sendSms.sendPlusNote = function(phoneNumber, msgInfo) { 
+			// 原生发送 可能安卓和ios发送有兼容性
+			try {
+				if (plus.os.name == "Android") {
+					var msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+					msg.to = [phoneNumber];
+					msg.body = msgInfo;
+					plus.messaging.sendMessage(msg);
+				} else { 
+					// ios 调用原生系统方法
+					var UIAPP = plus.ios.importClass("UIApplication");
+					var NSURL = plus.ios.importClass("NSURL");
+					var app = UIAPP.sharedApplication();
+					app.openURL(NSURL.URLWithString(`sms://${phoneNumber}&body=${msgInfo}`));
+				}
+			} catch (e) { 
+				// 如果执行失败，执行h5方法
+				sendSms.sendH5Note(phoneNumber, msgInfo)
+			}
+		} 
+		
+		//执行发送操作
+		sendSms.sendNote = function(phoneNumber, msgInfo) {
+			// if (mui.H5) {
+				sendSms.sendH5Note(phoneNumber, msgInfo)
+			// } else {
+				sendSms.sendPlusNote(phoneNumber, msgInfo)
+			// }
+		}
+		// export default sendSms
+	</script>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button onclick="sendSms.sendNote('19973527359','测试消息')"> 12324</button>
+	</body>
+</html>

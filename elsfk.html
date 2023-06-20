@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>俄罗斯方块</title>
+		<style>
+			body *{
+				margin: 0px;
+				padding: 0px;
+			}
+			.wai{
+				border: 1px #000000 solid;
+				width: 100%;
+				height: 1000px;
+			}
+			.yxk{
+				border: 1px #000000 solid;
+				width: 20%;
+				height: 60%;
+				margin: 20px auto;
+			}
+			.yxqy{
+				width: 100%;
+				height: 100%;
+				border: ghostwhite;
+			}
+			.yxqy tr{
+			}
+			.yxqy tr td{
+				width: 10%;
+				height: 5%;
+			}
+			.fkq{
+				width: 10%;
+				height: 18.5%;
+				position: absolute;
+				left: 28%;
+				top: 14%;
+				border: #008000 1px solid;
+			}
+			.fk{
+				width: 100%;
+				height: 100%;
+				border: ghostwhite;
+			}
+		</style>
+		<script src="js/jquery-1.4.2.min.js"></script>
+		<script>
+			var fkmap = new Map();
+			var yxmap = new Map();
+			var ys = 16;
+			var color = "";
+			function init(){
+				hdfk();
+				
+				// ys++;
+				setTimeout(function(){
+					yxks();
+				    $(".fk tr td").attr("style","background-color:none");
+					hdfk();
+				}, 2000);
+				
+			}
+			function hdfk(){
+				ys = ran();
+				fkmap.set("ys1",[10,11,15,16]);
+				fkmap.set("ys2",[9,15,16,22]);
+				fkmap.set("ys3",[9,10,16,17]);
+				fkmap.set("ys4",[10,15,16,21]);
+				//以上四种用红色
+				fkmap.set("ys5",[9,10,15,16]);
+				//蓝色
+				fkmap.set("ys6",[9,15,16,21]);
+				fkmap.set("ys7",[9,14,15,16]);
+				fkmap.set("ys8",[9,14,15,21]);
+				fkmap.set("ys9",[14,15,16,21]);
+				//黄色
+				fkmap.set("ys10",[14,15,16,17]);
+				fkmap.set("ys11",[9,15,21,27]);
+				//紫色
+				fkmap.set("ys12",[9,10,16,22]);
+				fkmap.set("ys13",[15,16,17,21]);
+				fkmap.set("ys14",[10,16,22,23]);
+				fkmap.set("ys15",[11,15,16,17]);
+				//青色
+				fkmap.set("ys16",[9,10,15,21]);
+				fkmap.set("ys17",[8,14,15,16]);
+				fkmap.set("ys18",[9,15,20,21]);
+				fkmap.set("ys19",[14,15,16,22]);
+				//灰色
+				var fk = new Array();
+				fk = fkmap.get("ys" + ys);
+				if(ys <= 4){
+					color = "red";
+				}else if(ys <= 5){
+					color = "blue";
+				}else if(ys <= 9){
+					color = "yellow";
+				}else if(ys <= 11){
+					color = "purple";
+				}else if(ys <= 15){
+					color = "cyan";
+				}else if(ys <= 19){
+					color = "gray";
+				}
+				// alert(color);
+				$.each(fk,function(index,value){
+					$("#fk" + value).attr("style","background-color:" + color);
+				});
+			}
+			
+			function ran(){  //每次访问获得一个随机数  （1-19）
+				return Math.ceil(Math.random()*15);
+			}
+			
+			function yxks(){
+				yxmap.set("ys1",[5,6,14,15]);
+				yxmap.set("ys2",[5,15,16,26]);
+				yxmap.set("ys3",[5,6,16,17]);
+				yxmap.set("ys4",[6,15,16,25]);
+				//以上四种用红色
+				yxmap.set("ys5",[5,6,15,16]);
+				//蓝色
+				yxmap.set("ys6",[5,15,16,25]);
+				yxmap.set("ys7",[5,14,15,16]);
+				yxmap.set("ys8",[5,14,15,25]);
+				yxmap.set("ys9",[5,6,7,16]);
+				//黄色
+				yxmap.set("ys10",[5,6,7,8]);
+				yxmap.set("ys11",[5,15,25,35]);
+				//紫色
+				yxmap.set("ys12",[5,6,16,26]);
+				yxmap.set("ys13",[5,6,7,15]);
+				yxmap.set("ys14",[5,15,25,26]);
+				yxmap.set("ys15",[7,15,16,17]);
+				//青色
+				yxmap.set("ys16",[5,6,15,25]);
+				yxmap.set("ys17",[5,15,16,17]);
+				yxmap.set("ys18",[6,16,25,26]);
+				yxmap.set("ys19",[5,6,7,17]);
+				//灰色
+				var fk = new Array();
+				fk = yxmap.get("ys" + ys);
+				if(ys <= 4){
+					color = "red";
+				}else if(ys <= 5){
+					color = "blue";
+				}else if(ys <= 9){
+					color = "yellow";
+				}else if(ys <= 11){
+					color = "purple";
+				}else if(ys <= 15){
+					color = "cyan";
+				}else if(ys <= 19){
+					color = "gray";
+				}
+				// alert(color);
+				$.each(fk,function(index,value){
+					$("#yx" + value).attr("style","background-color:" + color);
+				});
+				for (var i=1;i<21;i++) 
+				{ 
+					alert(1);
+				    setTimeout(function(){
+				    	start(fk);
+				    },1000);
+				} 
+			}
+			
+			function start(fk){
+				$(".yx tr td").attr("style","background-color:none");
+				fk[0] = fk[0] + 10;
+				fk[1] = fk[1] + 10;
+				fk[2] = fk[2] + 10;
+				fk[3] = fk[3] + 10;
+				if(fk[3] > 200){
+					return 0;
+				}
+				$.each(fk,function(index,value){
+					$("#yx" + (value + 10)).attr("style","background-color:" + color);
+				});
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<div class="wai">
+			<div class="yxk">
+				<div class="fkq">
+					<table class="fk" border="1" cellspacing="0" cellpadding="1">
+						<tr>
+							<td id="fk1"></td>
+							<td id="fk2"></td>
+							<td id="fk3"></td>
+							<td id="fk4"></td>
+							<td id="fk5"></td>
+							<td id="fk6"></td>
+						</tr>
+						<tr>
+							<td id="fk7"></td>
+							<td id="fk8"></td>
+							<td id="fk9"></td>
+							<td id="fk10"></td>
+							<td id="fk11"></td>
+							<td id="fk12"></td>
+						</tr>
+						<tr>
+							
+							<td id="fk13"></td>
+							<td id="fk14"></td>
+							<td id="fk15"></td>
+							<td id="fk16"></td>
+							<td id="fk17"></td>
+							<td id="fk18"></td>
+						</tr>
+						<tr>
+							<td id="fk19"></td>
+							<td id="fk20"></td>
+							<td id="fk21"></td>
+							<td id="fk22"></td>
+							<td id="fk23"></td>
+							<td id="fk24"></td>
+						</tr>
+						<tr>
+							<td id="fk25"></td>
+							<td id="fk26"></td>
+							<td id="fk27"></td>
+							<td id="fk28"></td>
+							<td id="fk29"></td>
+							<td id="fk30"></td>
+						</tr>
+					</table>
+				</div>
+				<table class="yxqy" border="1" cellpadding="0" cellspacing="1">
+					<tr>
+						<td id="yx1"></td>
+						<td id="yx2"></td>
+						<td id="yx3"></td>
+						<td id="yx4"></td>
+						<td id="yx5"></td>
+						<td id="yx6"></td>
+						<td id="yx7"></td>
+						<td id="yx8"></td>
+						<td id="yx9"></td>
+						<td id="yx10"></td>
+					</tr>
+					<tr>
+						<td id="yx11"></td>
+						<td id="yx12"></td>
+						<td id="yx13"></td>
+						<td id="yx14"></td>
+						<td id="yx15"></td>
+						<td id="yx16"></td>
+						<td id="yx17"></td>
+						<td id="yx18"></td>
+						<td id="yx19"></td>
+						<td id="yx20"></td>
+					</tr>
+					<tr>
+						<td id="yx21"></td>
+						<td id="yx22"></td>
+						<td id="yx23"></td>
+						<td id="yx24"></td>
+						<td id="yx25"></td>
+						<td id="yx26"></td>
+						<td id="yx27"></td>
+						<td id="yx28"></td>
+						<td id="yx29"></td>
+						<td id="yx30"></td>
+					</tr>
+					<tr>
+						<td id="yx31"></td>
+						<td id="yx32"></td>
+						<td id="yx33"></td>
+						<td id="yx34"></td>
+						<td id="yx35"></td>
+						<td id="yx36"></td>
+						<td id="yx37"></td>
+						<td id="yx38"></td>
+						<td id="yx39"></td>
+						<td id="yx40"></td>
+					</tr>
+					<tr>
+						<td id="yx41"></td>
+						<td id="yx42"></td>
+						<td id="yx43"></td>
+						<td id="yx44"></td>
+						<td id="yx45"></td>
+						<td id="yx46"></td>
+						<td id="yx47"></td>
+						<td id="yx48"></td>
+						<td id="yx49"></td>
+						<td id="yx50"></td>
+					</tr>
+					<tr>
+						<td id="yx51"></td>
+						<td id="yx52"></td>
+						<td id="yx53"></td>
+						<td id="yx54"></td>
+						<td id="yx55"></td>
+						<td id="yx56"></td>
+						<td id="yx57"></td>
+						<td id="yx58"></td>
+						<td id="yx59"></td>
+						<td id="yx60"></td>
+					</tr>
+					<tr>
+						<td id="yx61"></td>
+						<td id="yx62"></td>
+						<td id="yx63"></td>
+						<td id="yx64"></td>
+						<td id="yx65"></td>
+						<td id="yx66"></td>
+						<td id="yx67"></td>
+						<td id="yx68"></td>
+						<td id="yx69"></td>
+						<td id="yx70"></td>
+					</tr>
+					<tr>
+						<td id="yx71"></td>
+						<td id="yx72"></td>
+						<td id="yx73"></td>
+						<td id="yx74"></td>
+						<td id="yx75"></td>
+						<td id="yx76"></td>
+						<td id="yx77"></td>
+						<td id="yx78"></td>
+						<td id="yx79"></td>
+						<td id="yx80"></td>
+					</tr>
+					<tr>
+						<td id="yx81"></td>
+						<td id="yx82"></td>
+						<td id="yx83"></td>
+						<td id="yx84"></td>
+						<td id="yx85"></td>
+						<td id="yx86"></td>
+						<td id="yx87"></td>
+						<td id="yx88"></td>
+						<td id="yx89"></td>
+						<td id="yx90"></td>
+					</tr>
+					<tr>
+						<td id="yx91"></td>
+						<td id="yx92"></td>
+						<td id="yx93"></td>
+						<td id="yx94"></td>
+						<td id="yx95"></td>
+						<td id="yx96"></td>
+						<td id="yx97"></td>
+						<td id="yx98"></td>
+						<td id="yx99"></td>
+						<td id="yx100"></td>
+					</tr>
+					<tr>
+						<td id="yx101"></td>
+						<td id="yx102"></td>
+						<td id="yx103"></td>
+						<td id="yx104"></td>
+						<td id="yx105"></td>
+						<td id="yx106"></td>
+						<td id="yx107"></td>
+						<td id="yx108"></td>
+						<td id="yx109"></td>
+						<td id="yx110"></td>
+					</tr>
+					<tr>
+						<td id="yx111"></td>
+						<td id="yx112"></td>
+						<td id="yx113"></td>
+						<td id="yx114"></td>
+						<td id="yx115"></td>
+						<td id="yx116"></td>
+						<td id="yx117"></td>
+						<td id="yx118"></td>
+						<td id="yx119"></td>
+						<td id="yx120"></td>
+					</tr>
+					<tr>
+						<td id="yx121"></td>
+						<td id="yx122"></td>
+						<td id="yx123"></td>
+						<td id="yx124"></td>
+						<td id="yx125"></td>
+						<td id="yx126"></td>
+						<td id="yx127"></td>
+						<td id="yx128"></td>
+						<td id="yx129"></td>
+						<td id="yx130"></td>
+					</tr>
+					<tr>
+						<td id="yx131"></td>
+						<td id="yx132"></td>
+						<td id="yx133"></td>
+						<td id="yx134"></td>
+						<td id="yx135"></td>
+						<td id="yx136"></td>
+						<td id="yx137"></td>
+						<td id="yx138"></td>
+						<td id="yx139"></td>
+						<td id="yx140"></td>
+					</tr>
+					<tr>
+						<td id="yx141"></td>
+						<td id="yx142"></td>
+						<td id="yx143"></td>
+						<td id="yx144"></td>
+						<td id="yx145"></td>
+						<td id="yx146"></td>
+						<td id="yx147"></td>
+						<td id="yx148"></td>
+						<td id="yx149"></td>
+						<td id="yx150"></td>
+					</tr>
+					<tr>
+						<td id="yx151"></td>
+						<td id="yx152"></td>
+						<td id="yx153"></td>
+						<td id="yx154"></td>
+						<td id="yx155"></td>
+						<td id="yx156"></td>
+						<td id="yx157"></td>
+						<td id="yx158"></td>
+						<td id="yx159"></td>
+						<td id="yx160"></td>
+					</tr>
+					<tr>
+						<td id="yx161"></td>
+						<td id="yx162"></td>
+						<td id="yx163"></td>
+						<td id="yx164"></td>
+						<td id="yx165"></td>
+						<td id="yx166"></td>
+						<td id="yx167"></td>
+						<td id="yx168"></td>
+						<td id="yx169"></td>
+						<td id="yx170"></td>
+					</tr>
+					<tr>
+						<td id="yx171"></td>
+						<td id="yx172"></td>
+						<td id="yx173"></td>
+						<td id="yx174"></td>
+						<td id="yx175"></td>
+						<td id="yx176"></td>
+						<td id="yx177"></td>
+						<td id="yx178"></td>
+						<td id="yx179"></td>
+						<td id="yx180"></td>
+					</tr>
+					<tr>
+						<td id="yx181"></td>
+						<td id="yx182"></td>
+						<td id="yx183"></td>
+						<td id="yx184"></td>
+						<td id="yx185"></td>
+						<td id="yx186"></td>
+						<td id="yx187"></td>
+						<td id="yx188"></td>
+						<td id="yx189"></td>
+						<td id="yx190"></td>
+					</tr>
+					<tr>
+						<td id="yx191"></td>
+						<td id="yx192"></td>
+						<td id="yx193"></td>
+						<td id="yx194"></td>
+						<td id="yx195"></td>
+						<td id="yx196"></td>
+						<td id="yx197"></td>
+						<td id="yx198"></td>
+						<td id="yx199"></td>
+						<td id="yx200"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
